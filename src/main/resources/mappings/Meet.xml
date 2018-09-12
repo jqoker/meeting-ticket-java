@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.brickjs.dao.MeetDao">
+	<!-- 查询sql -->
+	<sql id="meetCols">
+		SELECT
+			M.id as meet_id,
+			M.title,
+			M.img_url,
+			M.publisher,
+			M.time,
+			M.ticket_price,
+			M.addr,
+			M.summary,
+			M.category_id,
+			<!-- M.comment_id, -->
+			M.collection,
+			M.sponsor,
+			M.co_sponsor,
+			M.publish,
+			<!-- M.out_of_date, -->
+			T.id as theme_id,
+			T.title as theme_title,
+			T.content as theme_content,
+			T.meet_id as theme_meet_id,
+			T.author_id as theme_author_id,
+			A.id as author_id,
+			A.name as author_name,
+			A.summary as author_summary,
+			A.avatar_img_url as author_avatar_img_url,
+			A.profession as author_profession,
+			A.company as author_company,
+			A.blog_site_url as author_blog_site_url,
+			A.github_site_url as author_github_site_url,
+			A.interest as author_interest
+		FROM meet M
+			LEFT JOIN theme T ON M.id = T.meet_id
+			LEFT JOIN author A ON T.author_id = A.id
+		WHERE M.del_flag=0 ORDER BY M.id DESC
+	</sql>
+	
+	<!-- 嘉宾 -->
+	<resultMap id="authorResultMap" type="Author">
+		<id property="id" column="author_id"/>
+		<result property="name" column="author_name"/>
+		<result property="summary" column="author_summary"/>
+		<result property="avatarImgUrl" column="author_avatar_img_url"/>
+		<result property="profession" column="author_profession"/>
+		<result property="company" column="author_company"/>
+		<result property="blogSiteUrl" column="author_blog_site_url"/>
+		<result property="githubSiteUrl" column="author_github_site_url"/>
+		<result property="interest" column="author_interest"/>
+	</resultMap>
+	
+	<!-- 
+		会议结果集
+		一个会议含有多个主题，每个主题对应一个嘉宾
+	 -->
+	<resultMap id="meetResultMap" type="Meet">
+		<!-- 会议 -->
+		<id property="id" column="meet_id"/>
+		<result property="title" column="title"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="publisher" column="publisher"/>
+		<result property="time" column="time"/>
+		<result property="ticketPrice" column="ticket_price"/>
+		<result property="addr" column="addr"/>
+		<result property="summary" column="summary"/>
+		<result property="categoryId" column="category_id"/>
+<!-- 		<result property="commentId" column="comment_id"/> -->
+		<result property="collection" column="collection"/>
+		<result property="sponsor" column="sponsor"/>
+		<result property="coSponsor" column="co_sponsor"/>
+		<result property="publish" column="publish"/>
+		<result property="outOfDate" column="out_of_date"/>
+		
+		<!-- 主题 -->
+		<collection property="themes" ofType="Theme">
+			<id property="id" column="theme_id"/>
+			<result property="title" column="theme_title"/>
+			<result property="content" column="theme_content"/>
+			<result property="meetId" column="theme_meet_id"/>
+			<result property="authorId" column="theme_author_id"/>
+			
+			<!-- 内嵌嘉宾 -->
+			<association property="author" resultMap="authorResultMap"/>
+		</collection>
+		
+	</resultMap>
+	
+	<!-- 查询所有会议 -->
+	<select
+		id="findAllList"
+		resultMap="meetResultMap"
+	>
+		<include refid="meetCols"></include>
+	</select>
+	
+	<!-- 查询类别下的所有会议 -->
+	<select
+		id="findMeetByCid"
+		parameterType="int"
+		resultType="Meet"
+	>
+		<include refid="meetCols"></include>
+		AND category_id=#{categoryId}
+	</select>
+	
+	<!-- 查询指定会议 -->
+	<select
+		id="get"
+		parameterType="int"
+		resultMap="meetResultMap"
+	>
+		<include refid="meetCols"></include>
+		AND M.id=#{meetId}
+	</select>
+	
+	<!-- 创建会议  -->
+	<insert
+		id="insert"
+		parameterType="Meet"
+		useGeneratedKeys="true"
+		keyProperty="id"
+	>
+		INSERT INTO meet (
+			title,
+			img_url,
+			publisher,
+			time,
+			ticket_price,
+			addr,
+			summary,
+			category_id,
+			comment,
+			collection,
+			sponsor,
+			co_sponsor
+		) VALUES (
+			#{title},
+			#{imgUrl},
+			#{publisher},
+			#{time},
+			#{ticketPrice},
+			#{addr},
+			#{summary},
+			#{categoryId},
+			#{comment},
+			#{collection},
+			#{sponsor},
+			#{coSponsor}
+		)
+	</insert>
+	
+	<!-- 删除会议 -->
+	<update
+		id="delete"
+		parameterType="Meet"
+	>
+		UPDATE meet SET del_flag=1 WHERE id=#{id}
+	</update>
+	
+	<!-- 更新会议 -->
+	<update
+		id="update"
+		parameterType="Meet"
+	>
+		UPDATE meet SET
+			title=#{title},
+			img_url=#{imgUrl},
+			publisher=#{publisher},
+			time=#{time},
+			ticket_price=#{ticketPrice},
+			addr=#{addr},
+			summary=#{summary},
+			category_id=#{categoryId},
+			comment=#{comment},
+			collection=#{collection},
+			sponsor=#{sponsor},
+			co_sponsor=#{coSponsor}
+		WHERE id=#{id}
+	</update>
+</mapper>

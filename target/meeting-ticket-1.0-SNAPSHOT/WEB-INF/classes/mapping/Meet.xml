@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.brickjs.dao.MeetRepository">
+	<!-- 查询sql -->
+	<sql id="selectMeetSql">
+		SELECT
+			meet.*,
+			T.id as theme_id,
+			T.meet_id,
+			T.title as theme_title,
+			T.content as theme_content,
+			T.author_name,
+			T.author_summary
+		FROM meet LEFT JOIN theme T ON meet.id = T.meet_id
+	</sql>
+	
+	<!-- 结果集 -->
+	<resultMap id="meetResultMap" type="com.brickjs.entity.Meet">
+		<id property="id" column="id"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="ticketPrice" column="ticket_price"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="commentId" column="comment_id"/>
+		<result property="coSponsor" column="co_sponsor"/>
+		<collection property="themes" ofType="com.brickjs.entity.Theme">
+			<id property="id" column="theme_id"/>
+			<result property="meetId" column="meet_id"/>
+			<result property="title" column="theme_title"/>
+			<result property="content" column="theme_content"/>
+			<result property="authorName" column="author_name"/>
+			<result property="authorSummary" column="author_summary"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 查询所有会议 -->
+	<select
+		id="listAll"
+		resultMap="meetResultMap"
+	>
+		<include refid="selectMeetSql"></include>
+	</select>
+	
+	<!-- 查询类别下的所有会议 -->
+	<select
+		id="findMeetsByCategoryId"
+		parameterType="int"
+		resultType="com.brickjs.entity.Meet"
+	>
+		<include refid="selectMeetSql"></include>
+		WHERE category_id=#{categoryId}
+	</select>
+	
+	<!-- 查询指定会议 -->
+	<select
+		id="findMeetById"
+		parameterType="int"
+		resultMap="meetResultMap"
+	>
+		<include refid="selectMeetSql"></include>
+		WHERE meet.id=#{meetId}
+	</select>
+	
+	<!-- 创建会议  -->
+	<insert
+		id="insertMeet"
+		parameterType="com.brickjs.entity.Meet"
+		useGeneratedKeys="true"
+		keyProperty="id"
+	>
+		INSERT INTO meet (
+			title,
+			img_url,
+			publisher,
+			time,
+			ticket_price,
+			addr,
+			summary,
+			category_id,
+			comment_id,
+			comment,
+			collection,
+			sponsor,
+			co_sponsor
+		) VALUES (
+			#{title},
+			#{imgUrl},
+			#{publisher},
+			#{time},
+			#{ticketPrice},
+			#{addr},
+			#{summary},
+			#{categoryId},
+			#{commentId},
+			#{comment},
+			#{collection},
+			#{sponsor},
+			#{coSponsor}
+		)
+	</insert>
+</mapper>

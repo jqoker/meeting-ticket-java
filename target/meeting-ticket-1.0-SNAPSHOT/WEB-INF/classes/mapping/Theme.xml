@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.brickjs.dao.ThemeRepository">
+	<sql id="themeCol">
+		id,
+		meet_id as meetId,
+		title,
+		content,
+		author_name as authorName,
+		author_summary as authorSummary
+	</sql>
+	
+	<select
+		id="findThemesByMeetId"
+		parameterType="int"
+		resultType="com.brickjs.entity.Theme"
+	>
+		SELECT
+			<include refid="themeCol"></include>
+		FROM theme WHERE meet_id=#{meetId}
+	</select>
+	
+	<insert
+		id="insertThemes"
+		parameterType="com.brickjs.entity.Theme"
+	>
+		INSERT INTO theme (
+			meet_id,
+			title,
+			content,
+			author_name,
+			author_summary
+		) VALUES 
+		<foreach item="item" collection="list" separator=",">
+		    (#{item.meetId}, #{item.title}, #{item.content}, #{item.authorName}, #{item.authorSummary})
+		</foreach>
+	</insert>
+</mapper>

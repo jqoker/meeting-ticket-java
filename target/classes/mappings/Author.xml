@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.brickjs.dao.AuthorDao">
+
+	<!-- 查询列 -->
+	<sql id="authorCols">
+		id,
+		name,
+		summary,
+		avatar_img_url,
+		positional_title,
+		profession,
+		company,
+		blog_site_url,
+		github_site_url,
+		interest,
+		praise,
+		collection
+	</sql>
+	
+	<!-- 所有集合 -->
+	<select
+		id="findAllList"
+		resultType="Author"
+	>
+		SELECT <include refid="authorCols"></include> FROM author WHERE del_flag=0 ORDER BY id DESC
+	</select>
+	
+	<!-- 根据用户名，用于主题表单中的嘉宾搜索推荐 -->
+	<select
+		id="get"
+		parameterType="string"
+		resultType="Author"
+	>
+		SELECT <include refid="authorCols"></include> FROM author WHERE name=#{name}
+	</select>
+	
+	<!-- 批量插入 -->
+	<insert
+		id="insert"
+		parameterType="Author"
+		useGeneratedKeys="true"
+		keyProperty="id"
+	>
+		INSERT INTO author (
+			name,
+			summary,
+			avatar_img_url,
+			positional_title,
+			profession,
+			company,
+			blog_site_url,
+			github_site_url,
+			interest,
+			praise,
+			collection
+		) VALUES
+		<foreach item="item" collection="list" separator=",">
+		    (
+				#{item.name},
+				#{item.summary},
+				#{item.avatarImgUrl},
+				#{item.positionalTitle},
+				#{item.profession},
+				#{item.company},
+				#{item.blogSiteUrl},
+				#{item.githubSiteUrl},
+				#{item.interest},
+				#{item.praise},
+				#{item.collection}
+		    )
+		</foreach>
+	</insert>
+	
+	<!-- 删除 本质上是更新 -->
+	<update
+		id="delete"
+		parameterType="Author"
+	>
+		UPDATE author SET del_flag=1 WHERE id=#{id}
+	</update>
+</mapper>

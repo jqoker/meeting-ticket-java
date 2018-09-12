@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.brickjs.dao.ThemeDao">
+	<!-- 列 -->
+	<sql id="themeCols">
+		id,
+		title,
+		content,
+		meet_id,
+		author_id
+	</sql>
+	
+	<!--
+		查询所有
+		meet_id=0标识没有被会议占用
+	-->
+	<select
+		id="findAllList"
+		resultType="Theme"
+	>
+		SELECT <include refid="themeCols"></include> FROM theme WHERE del_flag=0 ORDER BY id DESC
+	</select>
+	
+	<!-- 根据ids查询 -->
+	<select
+		id="findThemeByIds"
+		resultType="Theme"
+	>
+		SELECT <include refid="themeCols"></include> FROM theme WHERE id in
+		<foreach item="item" index="index" collection="list"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND del_flag=0 ORDER BY id DESC
+	</select>
+	
+	<!-- 会议ID查询主题 -->
+	<select
+		id="findThemeByMeetId"
+		parameterType="int"
+		resultType="Theme"
+	>
+		SELECT
+			<include refid="themeCols"></include>
+		FROM theme WHERE meet_id=#{meetId} AND del_flag=0 ORDER BY id DESC
+	</select>
+	
+	<!-- 批量插入主题 -->
+	<insert
+		id="insert"
+		parameterType="Theme"
+	>
+		INSERT INTO theme (
+			meet_id,
+			title,
+			content,
+			author_id
+		) VALUES
+		<foreach item="item" collection="list" separator=",">
+		    (#{item.meetId}, #{item.title}, #{item.content}, #{item.authorId})
+		</foreach>
+	</insert>
+	
+	<!-- 批量更新主题所属会议id -->
+	<update
+		id="updateThemeMeetIdByIds"
+		parameterType="Map"
+	>
+		UPDATE theme SET meet_id=#{meetId}
+		<where>
+			id in
+			<foreach item="item" collection="ids" separator="," open="(" close=")" index="">
+				#{item}
+			</foreach>
+		</where>
+	</update>
+	
+	<!-- 删除指定主题 -->
+	<update
+		id="delete"
+		parameterType="Theme"
+	>
+		UPDATE theme SET del_flag=1 WHERE id=#{id}
+	</update>
+	
+	<!-- 释放主题 -->
+	<update
+		id="resetThemeMeetId"
+		parameterType="int"
+	>
+		UPDATE theme SET meet_id=0 WHERE id=#{id}
+	</update>
+</mapper>
