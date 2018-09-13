@@ -40,7 +40,7 @@ public interface IThemeService {
 	 * @param map
 	 * @return
 	 */
-	int updateThemeMeetId(Map<String, Object> map);
+	int updateThemeMeetId(List<Map<String, Integer>> ids);
 
 	/**
 	 * 创建主题
@@ -55,11 +55,4 @@ public interface IThemeService {
 	 * @return
 	 */
 	int deleteTheme(int id);
-	
-	/**
-	 * 释放主题
-	 * @param theme
-	 * @return
-	 */
-	int deliveryTheme(int id);
 }

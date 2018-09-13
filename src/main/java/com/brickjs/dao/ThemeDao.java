@@ -37,12 +37,5 @@ public interface ThemeDao extends CrudDao<Theme> {
 	 * @param map
 	 * @return
 	 */
-	int updateThemeMeetIdByIds(Map<String, Object> map);
-	
-	/**
-	 * 重置主题会议id为0，释放主题
-	 * @param themeId
-	 * @return
-	 */
-	int resetThemeMeetId(int id);
+	int updateThemeMeetIdByIds(List<Map<String, Integer>> ids);
 }

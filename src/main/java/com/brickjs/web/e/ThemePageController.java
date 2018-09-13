@@ -86,24 +86,4 @@ public class ThemePageController {
 		}
 		return ajaxJson;
 	}
-	
-	/**
-	 * 释放主题
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping("/theme/delivery")
-	public AjaxCommonResponse<Map<String, Object>> themeDelivery(@RequestParam(required = true) int id) {
-		AjaxCommonResponse<Map<String, Object>> ajaxJson;
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			themeService.deliveryTheme(id);
-			map.put("id", id);
-			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
-		} catch (Exception e) {
-			// TODO: handle exception
-			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
-		}
-		return ajaxJson;
-	}
 }

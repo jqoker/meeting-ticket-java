@@ -4,6 +4,7 @@
 package com.brickjs.entity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yuhongliang
@@ -21,7 +22,7 @@ public class Meet {
 	private String ticketPrice;
 	private String summary;
 	private List<Theme> themes;
-	private List<Integer> ids;	/// 主题ids
+	private List<Map<String, Integer>> ids;
 	private int categoryId;
 	private int comment;
 	private int collection;
@@ -125,10 +126,10 @@ public class Meet {
 	public void setPublish(int publish) {
 		this.publish = publish;
 	}
-	public List<Integer> getIds() {
+	public List<Map<String, Integer>> getIds() {
 		return ids;
 	}
-	public void setIds(List<Integer> ids) {
+	public void setIds(List<Map<String, Integer>> ids) {
 		this.ids = ids;
 	}
 }

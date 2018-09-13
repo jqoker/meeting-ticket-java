@@ -3,8 +3,7 @@
  */
 package com.brickjs.service.impl;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,16 +47,17 @@ public class MeetServiceImpl implements IMeetService {
 	 */
 	@Transactional
 	public void save(Meet meet) {
+		List<Map<String, Integer>> ids = meet.getIds();
 		// 插入会议
 		meetingDaoService.insert(meet);
-		List<Integer> ids = meet.getIds();
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("meetId", meet.getId());
-		map.put("ids", ids);
-		
+		// 更新主题所属会议id
+		Integer returnMeetId = meet.getId();
+		for (Iterator<Map<String, Integer>> iterator = ids.iterator(); iterator.hasNext();) {
+			Map<String, Integer> map = (Map<String, Integer>) iterator.next();
+			map.replace("meetId", returnMeetId);
+		}
 		// 更新主题所属会议ID
-		themeDaoService.updateThemeMeetIdByIds(map);
+		themeDaoService.updateThemeMeetIdByIds(ids);
 	}
 
 	/**
@@ -81,12 +81,9 @@ public class MeetServiceImpl implements IMeetService {
 	  */
 	@Transactional
 	public int updateMeet(Meet meet) {
-		List<Integer> ids = meet.getIds();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("meetId", meet.getId());
-		map.put("ids", ids);
+		List<Map<String, Integer>> ids = meet.getIds();
 		// 更新主题所属会议ID
-		themeDaoService.updateThemeMeetIdByIds(map);
+		themeDaoService.updateThemeMeetIdByIds(ids);
 		return meetingDaoService.update(meet);
 	}
 

@@ -49,16 +49,12 @@ public class ThemeServiceImpl implements IThemeService {
 		return themeDaoService.findThemeByIds(ids);
 	}
 
-	public int updateThemeMeetId(Map<String, Object> map) {
-		return themeDaoService.updateThemeMeetIdByIds(map);
+	public int updateThemeMeetId(List<Map<String, Integer>> ids) {
+		return themeDaoService.updateThemeMeetIdByIds(ids);
 	}
 
 	public int deleteTheme(int id) {
 		return themeDaoService.delete(new Theme(id));
-	}
-
-	public int deliveryTheme(int id) {
-		return themeDaoService.resetThemeMeetId(id);
 	}
 
 }

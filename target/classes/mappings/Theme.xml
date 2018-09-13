@@ -26,7 +26,7 @@ and open the template in the editor.
 		id="findAllList"
 		resultType="Theme"
 	>
-		SELECT <include refid="themeCols"></include> FROM theme WHERE del_flag=0 ORDER BY id DESC
+		SELECT <include refid="themeCols"></include> FROM theme WHERE del_flag=0 AND meet_id=0 ORDER BY id DESC
 	</select>
 	
 	<!-- 根据ids查询 -->
@@ -72,13 +72,17 @@ and open the template in the editor.
 	<!-- 批量更新主题所属会议id -->
 	<update
 		id="updateThemeMeetIdByIds"
-		parameterType="Map"
+		parameterType="List"
 	>
-		UPDATE theme SET meet_id=#{meetId}
+		UPDATE theme
+		<set>
+			<foreach collection="list" item="item" index="" separator="" open=" meet_id=case " close="end">
+				WHEN id=#{item.id} THEN #{item.meetId}
+			</foreach>
+		</set>
 		<where>
-			id in
-			<foreach item="item" collection="ids" separator="," open="(" close=")" index="">
-				#{item}
+			<foreach collection="list" item="item" index="" separator="," open=" id in (" close=")">
+				#{item.id}
 			</foreach>
 		</where>
 	</update>
@@ -89,13 +93,5 @@ and open the template in the editor.
 		parameterType="Theme"
 	>
 		UPDATE theme SET del_flag=1 WHERE id=#{id}
-	</update>
-	
-	<!-- 释放主题 -->
-	<update
-		id="resetThemeMeetId"
-		parameterType="int"
-	>
-		UPDATE theme SET meet_id=0 WHERE id=#{id}
 	</update>
 </mapper>
