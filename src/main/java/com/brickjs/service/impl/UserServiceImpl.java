@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.brickjs.dao.UserDao;
 import com.brickjs.entity.User;
-import com.brickjs.service.IUserService;
+import com.brickjs.service.UserService;
 
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 
 	@Autowired
 	private UserDao userDao;
@@ -20,6 +20,5 @@ public class UserServiceImpl implements IUserService {
 	public User getUserByEmail(String email) {
 		return userDao.findUserByEmail(email);
 	}
-	
-	
+
 }

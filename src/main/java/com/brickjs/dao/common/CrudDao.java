@@ -32,6 +32,12 @@ public interface CrudDao<T> extends BaseDao {
 	public List<T> findAllList();
 	
 	/**
+	 * 指定id下记录集合
+	 * @return
+	 */
+	public List<T> findAllList(int id);
+	
+	/**
 	 * 插入记录
 	 * @param entity
 	 * @return

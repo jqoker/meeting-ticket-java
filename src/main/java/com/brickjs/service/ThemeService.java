@@ -12,13 +12,7 @@ import com.brickjs.entity.Theme;
  * @author yuhongliang
  *
  */
-public interface IThemeService {
-	
-	/**
-	 * 获取所有主题
-	 * @return
-	 */
-	List<Theme> getAllTheme();
+public interface ThemeService extends BaseService<Theme> {
 	
 	/**
 	 * 获取会议下的主题
@@ -28,14 +22,6 @@ public interface IThemeService {
 	List<Theme> getThemesByMeetId(int meetId);
 	
 	/**
-	 * 返回指定ids主题
-	 * @param ids
-	 * @return
-	 */
-	List<Theme> getThemeByIds(List<Integer> ids);
-	
-	
-	/**
 	 * 更新主题会议id
 	 * @param map
 	 * @return
@@ -43,16 +29,9 @@ public interface IThemeService {
 	int updateThemeMeetId(List<Map<String, Integer>> ids);
 
 	/**
-	 * 创建主题
-	 * @param theme
+	 * 所有未被占用的主题
+	 * 会议id=0
 	 * @return
 	 */
-	Boolean save(List<Theme> themes);
-	
-	/**
-	 * 删除主题
-	 * @param id
-	 * @return
-	 */
-	int deleteTheme(int id);
+	public List<Theme> listAllAvailableTheme();
 }

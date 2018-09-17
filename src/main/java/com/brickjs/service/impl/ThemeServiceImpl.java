@@ -11,28 +11,19 @@ import org.springframework.stereotype.Service;
 
 import com.brickjs.dao.ThemeDao;
 import com.brickjs.entity.Theme;
-import com.brickjs.service.IThemeService;
+import com.brickjs.service.ThemeService;
 
 /**
  * @author yuhongliang
  *
  */
 @Service
-public class ThemeServiceImpl implements IThemeService {
+public class ThemeServiceImpl extends BaseServiceImpl<Theme> implements ThemeService {
 	
 	@Autowired
 	private ThemeDao themeDaoService;
 
-
-	public Boolean save(List<Theme> themes) {
-		try {
-			themeDaoService.insert(themes);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
+	// 会议下的主题
 	public List<Theme> getThemesByMeetId(int meetId) {
 		try {
 			return themeDaoService.findThemeByMeetId(meetId);
@@ -40,21 +31,44 @@ public class ThemeServiceImpl implements IThemeService {
 			return null;
 		}
 	}
-
-	public List<Theme> getAllTheme() {
-		return themeDaoService.findAllList();
+	
+	// 所有未被占用的主题
+	// 会议id=0
+	public List<Theme> listAllAvailableTheme() {
+		return themeDaoService.findAllAvailableList();
 	}
 
-	public List<Theme> getThemeByIds(List<Integer> ids) {
-		return themeDaoService.findThemeByIds(ids);
-	}
-
+	// 更新主题所属会议
 	public int updateThemeMeetId(List<Map<String, Integer>> ids) {
 		return themeDaoService.updateThemeMeetIdByIds(ids);
 	}
 
-	public int deleteTheme(int id) {
+	// 保存
+	@Override
+	public int save(List<Theme> themes) {
+		try {
+			return themeDaoService.insert(themes);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	// 查询全部
+	@Override
+	public List<Theme> listAll() {
+		return themeDaoService.findAllList();
+	}
+
+	// 删除
+	@Override
+	public int remove(int id) {
 		return themeDaoService.delete(new Theme(id));
+	}
+	
+	// 更新
+	@Override
+	public int update(Theme theme) {
+		return themeDaoService.update(theme);
 	}
 
 }

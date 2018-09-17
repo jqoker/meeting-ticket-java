@@ -59,6 +59,7 @@
     	<property name="filterChainDefinitions">
     		<value>
     			/**/login = anon
+    			/**/o/** = anon
     			/** = jwtAuthenticationFilter
     		</value>
     	</property>

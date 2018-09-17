@@ -10,41 +10,49 @@ import org.springframework.stereotype.Service;
 
 import com.brickjs.dao.AuthorDao;
 import com.brickjs.entity.Author;
-import com.brickjs.service.IAuthorService;
+import com.brickjs.service.AuthorService;
 
 /**
  * @author yuhongliang
  *
  */
 @Service
-public class AuthorServiceImpl implements IAuthorService {
+public class AuthorServiceImpl extends BaseServiceImpl<Author> implements AuthorService {
 	
 	@Autowired
 	private AuthorDao authorDaoService;
+	
+	/// 更加用户名查询
+	public List<Author> getAuthorByName(String name) {
+		return authorDaoService.get(name);
+	}
 	
 	/**
 	 * 保存嘉宾
 	 * @param authors
 	 * @return
 	 */
+	@Override
 	public int save(List<Author> authors) {
 		return authorDaoService.insert(authors);
 	}
 
-
-	public List<Author> getAllAuthorList() {
+	// 查询全部
+	@Override
+	public List<Author> listAll() {
 		return authorDaoService.findAllList();
 	}
 
-
-	public List<Author> getAuthorByName(String name) {
-		// TODO Auto-generated method stub
-		return authorDaoService.get(name);
-	}
-
-
-	public int deleteAuthor(int id) {
+	// 删除
+	@Override
+	public int remove(int id) {
 		return authorDaoService.delete(new Author(id));
+	}
+	
+	// 更新
+	@Override
+	public int update(Author author) {
+		return authorDaoService.update(author);
 	}
 
 }

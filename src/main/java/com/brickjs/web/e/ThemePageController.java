@@ -19,10 +19,8 @@ import com.brickjs.service.impl.ThemeServiceImpl;
 import com.brickjs.vo.out.AjaxCommonResponse;
 
 /**
- * @author yuhongliang
- *
+ * @author hongliang.yu
  */
-
 @RestController
 @RequestMapping("/meeting/e/ajax/")
 public class ThemePageController {
@@ -31,19 +29,42 @@ public class ThemePageController {
 	private ThemeServiceImpl themeService;
 	
 	/**
-	 * 所有主题
+	 * 所有主题(不论是否被会议占用)
 	 * @return
 	 */
 	@RequestMapping("/theme/list")
 	public AjaxCommonResponse<Map<String, Object>> themeList() {
 		AjaxCommonResponse<Map<String, Object>> ajaxJson;
 		try {
-			Map<String, Object> map = new HashMap<String, Object>();
-			List<Theme> themes = themeService.getAllTheme();
-			map.put("themes", themes);
-			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				private static final long serialVersionUID = 139523328282057761L;
+				{
+					put("themes", themeService.listAll());
+				}
+			});
 		} catch(Exception e) {
 			System.out.println(e);
+			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
+		}
+		return ajaxJson;
+	}
+	
+	/**
+	 * 所有未被会议占用的主题
+	 * 会议id=0标识该主题未被占用，可以供其他会议选择
+	 * @return
+	 */
+	@RequestMapping("/theme/list_available")
+	public AjaxCommonResponse<Map<String, Object>> getAllAvailableThemes() {
+		AjaxCommonResponse<Map<String, Object>> ajaxJson;
+		try {
+			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				private static final long serialVersionUID = 139523328282057761L;
+				{
+					put("themes", themeService.listAllAvailableTheme());
+				}
+			});
+		} catch(Exception e) {
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxJson;
@@ -61,7 +82,6 @@ public class ThemePageController {
 			themeService.save(themes);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK);
 		} catch (Exception e) {
-			// TODO: handle exception
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxJson;
@@ -73,15 +93,35 @@ public class ThemePageController {
 	 * @return
 	 */
 	@RequestMapping("/theme/delete")
-	public AjaxCommonResponse<Map<String, Object>> themeDelete(@RequestParam(required = true) int id) {
-		AjaxCommonResponse<Map<String, Object>> ajaxJson;
-		Map<String, Object> map = new HashMap<String, Object>();
+	public AjaxCommonResponse<Map<String, Integer>> themeDelete(@RequestParam(required = true) final int id) {
+		AjaxCommonResponse<Map<String, Integer>> ajaxJson;
 		try {
-			themeService.deleteTheme(id);
-			map.put("id", id);
-			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			themeService.remove(id);
+			ajaxJson = new AjaxCommonResponse<Map<String,Integer>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Integer>() {
+				private static final long serialVersionUID = -5807287987886511317L;
+				{
+					put("id", id);
+				}
+			});
 		} catch (Exception e) {
-			// TODO: handle exception
+			ajaxJson = new AjaxCommonResponse<Map<String,Integer>>(HttpStatusCode.HTTP_CODE_ERR);
+		}
+		return ajaxJson;
+	}
+	
+	/**
+	 * 更新主题
+	 * @param theme
+	 * @return
+	 */
+	@RequestMapping("/theme/update")
+	public AjaxCommonResponse<Map<String, Object>> themeUpdate(@RequestBody Theme theme) {
+		AjaxCommonResponse<Map<String, Object>> ajaxJson;
+		try {
+			themeService.update(theme);
+			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK);
+		} catch (Exception e) {
+			System.out.println(e);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxJson;

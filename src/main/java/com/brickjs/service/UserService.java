@@ -9,7 +9,7 @@ import com.brickjs.entity.User;
  * @author yuhongliang
  *
  */
-public interface IUserService {
+public interface UserService extends BaseService<User> {
 	
 	/**
 	 * 根据邮箱获取用户

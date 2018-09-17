@@ -21,6 +21,8 @@ and open the template in the editor.
 		company,
 		blog_site_url,
 		github_site_url,
+		telephone,
+		email,
 		interest,
 		praise,
 		collection
@@ -59,6 +61,8 @@ and open the template in the editor.
 			company,
 			blog_site_url,
 			github_site_url,
+			telephone,
+			email,
 			interest,
 			praise,
 			collection
@@ -73,6 +77,8 @@ and open the template in the editor.
 				#{item.company},
 				#{item.blogSiteUrl},
 				#{item.githubSiteUrl},
+				#{item.telephone},
+				#{item.email},
 				#{item.interest},
 				#{item.praise},
 				#{item.collection}
@@ -86,5 +92,27 @@ and open the template in the editor.
 		parameterType="Author"
 	>
 		UPDATE author SET del_flag=1 WHERE id=#{id}
+	</update>
+	
+	<!-- 更新嘉宾 -->
+	<update
+		id="update"
+		parameterType="Author"
+	>
+		UPDATE author SET
+			name = #{name},
+			summary = #{summary},
+			avatar_img_url = #{avatarImgUrl},
+			positional_title = #{positionalTitle},
+			profession = #{profession},
+			company = #{company},
+			blog_site_url = #{blogSiteUrl},
+			github_site_url = #{githubSiteUrl},
+			telephone = #{telephone},
+			email = #{email},
+			interest = #{interest},
+			praise = #{praise},
+			collection = #{collection}
+		WHERE id=#{id}
 	</update>
 </mapper>

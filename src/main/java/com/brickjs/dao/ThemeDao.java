@@ -21,21 +21,24 @@ public interface ThemeDao extends CrudDao<Theme> {
 	List<Theme> findThemeByMeetId(int meetId);
 	
 	/**
-	 * 根据ids查询主题
-	 * @param ids
-	 * @return
-	 */
-	List<Theme> findThemeByIds(List<Integer> ids);
-	
-	/**
 	 * 根据ids更新主题所属会议id
 	 * 入参类型
-	 * {
-	 * 		"meetId": ...,
-	 * 		"ids": [....]
-	 * }
-	 * @param map
+	 *  "ids": [
+	 *  	{
+	 *  		"id": ...,	主题id
+	 *  		"meetId: ... 会议id
+	 *  	}
+	 *  	...
+	 *  ]
+	 * @param list
 	 * @return
 	 */
 	int updateThemeMeetIdByIds(List<Map<String, Integer>> ids);
+	
+	/**
+	 * 查询所有未被占用的主题
+	 * 会议id=0
+	 * @return
+	 */
+	List<Theme> findAllAvailableList();
 }

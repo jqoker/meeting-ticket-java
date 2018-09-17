@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brickjs.constant.HttpStatusCode;
-import com.brickjs.entity.Meet;
 import com.brickjs.service.impl.MeetServiceImpl;
 import com.brickjs.vo.out.AjaxCommonResponse;
 
@@ -38,10 +37,16 @@ public class IndexController {
 	public AjaxCommonResponse<Map<String, Object>> meets(ServletRequest request, ServletResponse response) {
 		AjaxCommonResponse<Map<String, Object>> ajaxCommonResponse;
 		try {
-			// 查询meeting
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("meets", meetingService.getAllMeets());
-			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			// 查询所有会议
+			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -4620119999025546267L;
+				{
+					put("meet", meetingService.listAll());
+				}
+			});
 		} catch (Exception e) {
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
@@ -49,18 +54,23 @@ public class IndexController {
 	}
 
 	/**
-	 * 查询指定会议
+	 * 会议详情
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/meet")
-	public AjaxCommonResponse<Map<String, Object>> Meet(@RequestParam(required = true) int id) {
+	@RequestMapping("/meet_detail")
+	public AjaxCommonResponse<Map<String, Object>> Meet(@RequestParam(required = true) final int id) {
 		AjaxCommonResponse<Map<String, Object>> ajaxCommonResponse;
 		try {
-			Meet meet = meetingService.getMeetById(id);
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("meet", meet);
-			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -4222836130430154666L;
+				{
+					put("meet", meetingService.detail(id));
+				}
+			});
 		} catch (Exception e) {
 			System.out.println(e);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
