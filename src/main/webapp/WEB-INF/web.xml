@@ -47,6 +47,16 @@
 	    <dispatcher>INCLUDE</dispatcher>
 	    <dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+	
+	<!-- druid监控页面 -->
+    <servlet>
+		 <servlet-name>DruidStatView</servlet-name>
+		 <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
     
     <!-- dispatch servlet 配置 -->
     <servlet>

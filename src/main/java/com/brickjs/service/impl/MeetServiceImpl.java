@@ -14,14 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.brickjs.dao.MeetDao;
 import com.brickjs.dao.ThemeDao;
 import com.brickjs.entity.Meet;
-import com.brickjs.service.IMeetService;
+import com.brickjs.service.MeetService;
 
 /**
  * @author yuhongliang
  *
  */
 @Service
-public class MeetServiceImpl implements IMeetService {
+public class MeetServiceImpl extends BaseServiceImpl<Meet> implements MeetService {
 	
 	@Autowired
 	private MeetDao meetingDaoService;
@@ -29,49 +29,45 @@ public class MeetServiceImpl implements IMeetService {
 	private ThemeDao themeDaoService;
 
 	/**
-	 * 获取会议列表
-	 */
-	public List<Meet> getAllMeets() {
-		return meetingDaoService.findAllList();
-	}
-
-	/**
 	 * 类别下会议
 	 */
-	public List<Meet> getMeetsByCategoryId(int categoryId) {
+	public List<Meet> getAllMeetsByCategoryId(int categoryId) {
 		return meetingDaoService.findMeetByCid(categoryId);
+	}
+	
+	/**
+	 * 获取会议列表
+	 */
+	@Override
+	public List<Meet> listAll() {
+		return meetingDaoService.findAllList();
 	}
 
 	/**
 	 * 创建会议
 	 */
+	@Override
 	@Transactional
-	public void save(Meet meet) {
+	public int save(Meet meet) {
 		List<Map<String, Integer>> ids = meet.getIds();
-		// 插入会议
-		meetingDaoService.insert(meet);
+		// 插入会议, 返回影响行数
+		int count = meetingDaoService.insert(meet);
 		// 更新主题所属会议id
-		Integer returnMeetId = meet.getId();
+		Integer lastInsertMeetId = meet.getId();
 		for (Iterator<Map<String, Integer>> iterator = ids.iterator(); iterator.hasNext();) {
 			Map<String, Integer> map = (Map<String, Integer>) iterator.next();
-			map.replace("meetId", returnMeetId);
+			map.replace("meetId", lastInsertMeetId);
 		}
-		// 更新主题所属会议ID
 		themeDaoService.updateThemeMeetIdByIds(ids);
-	}
-
-	/**
-	 * 查询指定会议
-	 */
-	public Meet getMeetById(int meetId) {
-		return meetingDaoService.get(meetId);
+		return count;
 	}
 
 	/**
 	 * 删除会议
 	 */
-	public void deleteMeetById(int id) {
-		meetingDaoService.delete(new Meet(id));
+	@Override
+	public int remove(int id) {
+		return meetingDaoService.delete(new Meet(id));
 	}
 
 	 /**
@@ -79,12 +75,21 @@ public class MeetServiceImpl implements IMeetService {
 	  * @param meet
 	  * @return
 	  */
+	@Override
 	@Transactional
-	public int updateMeet(Meet meet) {
+	public int update(Meet meet) {
 		List<Map<String, Integer>> ids = meet.getIds();
 		// 更新主题所属会议ID
 		themeDaoService.updateThemeMeetIdByIds(ids);
 		return meetingDaoService.update(meet);
+	}
+
+	/**
+	 * 会议详情
+	 */
+	@Override
+	public Meet detail(int id) {
+		return meetingDaoService.get(id);
 	}
 
 }

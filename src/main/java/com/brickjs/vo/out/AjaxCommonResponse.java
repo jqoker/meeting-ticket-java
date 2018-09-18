@@ -7,7 +7,7 @@ import com.brickjs.constant.HttpStatusCode;
 
 /**
  * @author yuhongliang
- *
+ * ajax响应基类
  */
 public class AjaxCommonResponse<T> {
 	// 定义常量

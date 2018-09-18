@@ -22,9 +22,8 @@ import com.brickjs.vo.out.AjaxCommonResponse;
 
 /**
  * @author yuhongliang
- *
+ * 会议控制器
  */
-
 @RestController
 @RequestMapping("/meeting/e/ajax/")
 public class MeetPageController {
@@ -41,9 +40,12 @@ public class MeetPageController {
 		AjaxCommonResponse<Map<String, Object>> ajaxCommonResponse;
 		try {
 			// map
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("meets", meetingService.getAllMeets());
-			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				private static final long serialVersionUID = 284168023697104717L;
+				{
+					put("meets", meetingService.listAll());
+				}
+			});
 		} catch (Exception e) {
 			System.out.println(e);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
@@ -57,13 +59,15 @@ public class MeetPageController {
 	 * @return
 	 */
 	@RequestMapping("/meet/category")
-	public AjaxCommonResponse<Map<String, Object>> meets_in_category(@RequestParam(required = true) int id) {
+	public AjaxCommonResponse<Map<String, Object>> meetInSpecialCategory(@RequestParam(required = true) final int id) {
 		AjaxCommonResponse<Map<String, Object>> ajaxCommonResponse;
 		try {
-			// map
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("meets", meetingService.getMeetsByCategoryId(id));
-			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				private static final long serialVersionUID = 3719753392451436526L;
+				{
+					put("meets", meetingService.getAllMeetsByCategoryId(id));
+				}
+			});
 		} catch (Exception e) {
 			System.out.println(e);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
@@ -98,7 +102,7 @@ public class MeetPageController {
 	public AjaxCommonResponse<Map<String, Object>> updateMeet(@RequestBody Meet meet) {
 		AjaxCommonResponse<Map<String, Object>> ajaxCommonResponse;
 		try {
-			meetingService.updateMeet(meet);
+			meetingService.update(meet);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK);
 		} catch (Exception e) {
 			System.out.println(e);
@@ -113,15 +117,18 @@ public class MeetPageController {
 	 * @return
 	 */
 	@RequestMapping("/meet/delete")
-	public AjaxCommonResponse<Map<String, Object>> deleteMeet(@RequestParam(required = true) int id) {
-		AjaxCommonResponse<Map<String, Object>> ajaxCommonResponse;
-		Map<String, Object> map = new HashMap<String, Object>();
+	public AjaxCommonResponse<Map<String, Integer>> deleteMeet(@RequestParam(required = true) final int id) {
+		AjaxCommonResponse<Map<String, Integer>> ajaxCommonResponse;
 		try {
-			meetingService.deleteMeetById(id);
-			map.put("id", id);
-			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			meetingService.remove(id);
+			ajaxCommonResponse = new AjaxCommonResponse<Map<String, Integer>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Integer>() {
+				private static final long serialVersionUID = 4524908329136049057L;
+				{
+					put("id", id);
+				}
+			});
 		} catch(Exception e) {
-			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
+			ajaxCommonResponse = new AjaxCommonResponse<Map<String, Integer>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxCommonResponse;
 	}

@@ -11,46 +11,79 @@ and open the template in the editor.
 <mapper namespace="com.brickjs.dao.ThemeDao">
 	<!-- 列 -->
 	<sql id="themeCols">
-		id,
-		title,
-		content,
-		meet_id,
-		author_id
+		SELECT
+			T.id as theme_id,
+			T.title as theme_title,
+			T.content as theme_content,
+			T.meet_id as theme_meet_id,
+			T.author_id as theme_author_id,
+			A.id as author_id,
+			A.name as author_name,
+			A.summary as author_summary,
+			A.avatar_img_url as author_avatar_img_url,
+			A.profession as author_profession,
+			A.company as author_company,
+			A.blog_site_url as author_blog_site_url,
+			A.github_site_url as author_github_site_url,
+			A.interest as author_interest
+		FROM theme T
+		JOIN author A ON T.author_id = A.id
+		WHERE T.del_flag = 0
 	</sql>
+	
+	<!-- 嘉宾 -->
+	<resultMap id="authorResultMap" type="Author">
+		<id property="id" column="author_id"/>
+		<result property="name" column="author_name"/>
+		<result property="summary" column="author_summary"/>
+		<result property="avatarImgUrl" column="author_avatar_img_url"/>
+		<result property="profession" column="author_profession"/>
+		<result property="company" column="author_company"/>
+		<result property="blogSiteUrl" column="author_blog_site_url"/>
+		<result property="githubSiteUrl" column="author_github_site_url"/>
+		<result property="interest" column="author_interest"/>
+	</resultMap>
+	
+	<!-- 主题 -->
+	<resultMap id="themeResultMap" type="Theme">
+		<!-- 主题 -->
+		<id property="id" column="theme_id"/>
+		<result property="title" column="theme_title"/>
+		<result property="content" column="theme_content"/>
+		<result property="meetId" column="theme_meet_id"/>
+<!-- 		<result property="authorId" column="theme_author_id"/> -->
+		<!-- 内嵌嘉宾 -->
+		<association property="author" resultMap="authorResultMap"/>
+	</resultMap>
 	
 	<!--
 		查询所有
 		meet_id=0标识没有被会议占用
 	-->
 	<select
-		id="findAllList"
-		resultType="Theme"
+		id="findAllAvailableList"
+		resultMap="themeResultMap"
 	>
-		SELECT <include refid="themeCols"></include> FROM theme WHERE del_flag=0 AND meet_id=0 ORDER BY id DESC
+		<include refid="themeCols"></include> AND T.meet_id=0 ORDER BY T.id DESC
 	</select>
 	
-	<!-- 根据ids查询 -->
+	<!--
+		查询所有
+	-->
 	<select
-		id="findThemeByIds"
-		resultType="Theme"
+		id="findAllList"
+		resultMap="themeResultMap"
 	>
-		SELECT <include refid="themeCols"></include> FROM theme WHERE id in
-		<foreach item="item" index="index" collection="list"
-				 open="(" separator="," close=")">
-			#{item}
-		</foreach>
-		AND del_flag=0 ORDER BY id DESC
+		<include refid="themeCols"></include> ORDER BY T.id DESC
 	</select>
 	
 	<!-- 会议ID查询主题 -->
 	<select
 		id="findThemeByMeetId"
 		parameterType="int"
-		resultType="Theme"
+		resultMap="themeResultMap"
 	>
-		SELECT
-			<include refid="themeCols"></include>
-		FROM theme WHERE meet_id=#{meetId} AND del_flag=0 ORDER BY id DESC
+		<include refid="themeCols"></include> AND meet_id=#{meetId} ORDER BY T.id DESC
 	</select>
 	
 	<!-- 批量插入主题 -->
@@ -93,5 +126,17 @@ and open the template in the editor.
 		parameterType="Theme"
 	>
 		UPDATE theme SET del_flag=1 WHERE id=#{id}
+	</update>
+	
+	<!-- 更新主题 -->
+	<update
+		id="update"
+		parameterType="Theme"
+	>
+		UPDATE theme SET
+			title=#{title},
+			content=#{content},
+			author_id=#{authorId}
+		WHERE id=#{id}
 	</update>
 </mapper>

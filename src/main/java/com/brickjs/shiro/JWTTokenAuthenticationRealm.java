@@ -13,7 +13,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.brickjs.entity.User;
-import com.brickjs.service.IUserService;
+import com.brickjs.service.UserService;
 import com.brickjs.utils.JWTTokenUtil;
 
 /**
@@ -25,7 +25,7 @@ public class JWTTokenAuthenticationRealm extends AuthorizingRealm {
 	private static final String REALM_NAME = "jwtVerfiyRealm";
 	
 	@Autowired
-	private IUserService loginAccountService;
+	private UserService loginAccountService;
 	
 	/**
 	 * 设定realm支持该类型token

@@ -11,8 +11,10 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
+	<!-- 扫描包 -->
     <context:component-scan base-package="com.brickjs.web"></context:component-scan>
     
+    <!-- http message 配置 -->
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter"></bean>   
@@ -26,6 +28,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     
+    <!-- 视图配置 -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/pages/"/>
@@ -34,6 +37,7 @@
     
     <mvc:view-controller path="/" view-name="index"/>
     
+    <!-- 跨域配置 -->
     <mvc:cors>
 	    <mvc:mapping path="/**"
 	        allowed-origins="*"

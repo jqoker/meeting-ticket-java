@@ -18,6 +18,8 @@ public class Author {
 	private String company;
 	private String blogSiteUrl;
 	private String githubSiteUrl;
+	private String telephone;
+	private String email;
 	private String interest; // 兴趣爱好
 	private int praise;	// 点赞数
 	private int collection;	// 关注数
@@ -107,5 +109,21 @@ public class Author {
 	}
 	public void setCollection(int collection) {
 		this.collection = collection;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 }

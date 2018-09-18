@@ -38,7 +38,7 @@ public class AuthorPageController {
 		AjaxCommonResponse<Map<String, Object>> ajaxAuthorJson;
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			List<Author> list = authorService.getAllAuthorList();
+			List<Author> list = authorService.listAll();
 			map.put("authors", list);
 			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
 		} catch (Exception e) {
@@ -62,7 +62,6 @@ public class AuthorPageController {
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
 			authorService.save(authors);
-//			map.put("id", authors());
 			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -103,7 +102,7 @@ public class AuthorPageController {
 		AjaxCommonResponse<Map<String, Object>> ajaxJson;
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			authorService.deleteAuthor(id);
+			authorService.remove(id);
 			map.put("id", id);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
 		} catch (Exception e) {
@@ -112,5 +111,27 @@ public class AuthorPageController {
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxJson;
+	}
+	
+	/**
+	 * 创建嘉宾
+	 * @param author
+	 * @return
+	 */
+	@RequestMapping("/author/update")
+	public AjaxCommonResponse<Map<String, Object>> updateAuthor(@RequestBody Author author) {
+		AjaxCommonResponse<Map<String, Object>> ajaxAuthorJson;
+		if (author == null) {
+			return new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
+		}
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			authorService.update(author);
+			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+		} catch (Exception e) {
+			System.out.println(e);
+			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
+		}
+		return ajaxAuthorJson;
 	}
 }
