@@ -19,8 +19,7 @@ import com.brickjs.service.impl.AuthorServiceImpl;
 import com.brickjs.vo.out.AjaxCommonResponse;
 
 /**
- * @author yuhongliang
- *
+ * @author hongliang.yu
  */
 @RestController
 @RequestMapping("/meeting/e/ajax/")
@@ -37,12 +36,13 @@ public class AuthorPageController {
 	public AjaxCommonResponse<Map<String, Object>> getAuthorList() {
 		AjaxCommonResponse<Map<String, Object>> ajaxAuthorJson;
 		try {
-			Map<String, Object> map = new HashMap<String, Object>();
-			List<Author> list = authorService.listAll();
-			map.put("authors", list);
-			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>(){
+				private static final long serialVersionUID = 9063660679922745268L;
+				{
+					put("authors", authorService.listAll());
+				}
+			});
 		} catch (Exception e) {
-			// TODO: handle exception
 			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxAuthorJson;
@@ -60,12 +60,9 @@ public class AuthorPageController {
 			return new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		try {
-			Map<String, Object> map = new HashMap<String, Object>();
 			authorService.save(authors);
-			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK);
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
 			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxAuthorJson;
@@ -77,16 +74,16 @@ public class AuthorPageController {
 	 * @return
 	 */
 	@RequestMapping("/author/suggest")
-	public AjaxCommonResponse<Map<String, Object>> suggestAuthor(@RequestParam(required = true) String name) {
+	public AjaxCommonResponse<Map<String, Object>> suggestAuthor(@RequestParam(required = true) final String name) {
 		AjaxCommonResponse<Map<String, Object>> ajaxSuggestAuthorJson;
 		try {
-			Map<String, Object> map = new HashMap<String, Object>();
-			List<Author> list = authorService.getAuthorByName(name);
-			map.put("list", list);
-			ajaxSuggestAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxSuggestAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				private static final long serialVersionUID = 1097872131398147535L;
+				{
+					put("list", authorService.getAuthorByName(name));
+				}
+			});
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
 			ajaxSuggestAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxSuggestAuthorJson;
@@ -98,16 +95,17 @@ public class AuthorPageController {
 	 * @return
 	 */
 	@RequestMapping("/author/delete")
-	public AjaxCommonResponse<Map<String, Object>> themeDelete(@RequestParam(required = true) int id) {
+	public AjaxCommonResponse<Map<String, Object>> themeDelete(@RequestParam(required = true) final int id) {
 		AjaxCommonResponse<Map<String, Object>> ajaxJson;
-		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			authorService.remove(id);
-			map.put("id", id);
-			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+				private static final long serialVersionUID = -9050854118023500777L;
+				{
+					put("id", id);
+				}
+			});
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxJson;
@@ -125,12 +123,10 @@ public class AuthorPageController {
 			return new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		try {
-			Map<String, Object> map = new HashMap<String, Object>();
 			authorService.update(author);
-			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+			ajaxAuthorJson = new AjaxCommonResponse<Map<String, Object>>(HttpStatusCode.HTTP_CODE_OK);
 		} catch (Exception e) {
-			System.out.println(e);
-			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
+			ajaxAuthorJson = new AjaxCommonResponse<Map<String, Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxAuthorJson;
 	}

@@ -14,10 +14,8 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 
 /**
- * @author yuhongliang
- *
+ * @author hongliang.yu
  */
-
 @RestController
 @RequestMapping("/meeting/e/ajax/")
 public class QiniuTokenController {
@@ -30,18 +28,20 @@ public class QiniuTokenController {
 	private static final String RETURN_BODY = "{\"code\":\"0\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"fsize\":$(fsize),\"key\":$(key)}";
 
 	// 下发七牛云 upload token
-	// todo 需要加入缓存
+	// TODO 需要加入缓存
 	@RequestMapping("/qiniu/upload/token")
-	public AjaxCommonResponse<Map<String, Object>> token() {
+	public AjaxCommonResponse<Map<String, Object>> generateQiniuToken() {
 		StringMap putPolicy = new StringMap();
 		putPolicy.put("returnBody", RETURN_BODY);
 		Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
-		String token = auth.uploadToken(BUCKET, null, EXPIRE_SECONDS, putPolicy);
+		final String token = auth.uploadToken(BUCKET, null, EXPIRE_SECONDS, putPolicy);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", 0);
-		map.put("token", token);
-		
-		return new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, map);
+		return new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
+			private static final long serialVersionUID = -2349850924054069657L;
+			{
+				put("code", 0);
+				put("token", token);
+			}
+		});
 	}
 }

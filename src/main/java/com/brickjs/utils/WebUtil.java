@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author yuhongliang
+ * @author hongliang.yu
  * 实用工具类
  */
 public class WebUtil {
@@ -17,7 +17,7 @@ public class WebUtil {
 	/**
 	 * 转换http request|response
 	 * @param request
-	 * @return
+	 * @return HttpServletRequest | HttpServletResponse
 	 */
 	public static HttpServletRequest toHttpRequest(ServletRequest request) {
 		return (HttpServletRequest)request;
@@ -25,5 +25,4 @@ public class WebUtil {
 	public static HttpServletResponse toHttpResponse(ServletResponse response) {
 		return (HttpServletResponse)response;
 	}
-
 }

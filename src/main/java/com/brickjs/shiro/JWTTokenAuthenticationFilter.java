@@ -52,6 +52,8 @@ public class JWTTokenAuthenticationFilter extends BasicHttpAuthenticationFilter 
 	
 	/**
 	 * 尝试执行登录
+	 * 从cookie中取出_u_token字段值
+	 * 实例化JWTAuthenticationToken对象并执行登录
 	 */
 	@Override
 	protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
@@ -160,9 +162,11 @@ public class JWTTokenAuthenticationFilter extends BasicHttpAuthenticationFilter 
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
+        // 允许携带cookie
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
         
         // options请求，不处理
+        // 如果浏览器请求数据格式为application/json,那么请求时会先发送options请求
         if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return false;

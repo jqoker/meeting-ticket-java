@@ -5,7 +5,7 @@ package com.brickjs.shiro;
 import org.apache.shiro.authc.AuthenticationToken;
 
 /**
- * @author yuhongliang
+ * @author hongliang.yu
  * 自定义认证token
  */
 public class JWTAuthenticationToken implements AuthenticationToken  {

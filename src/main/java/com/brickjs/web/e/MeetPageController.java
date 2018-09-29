@@ -21,7 +21,7 @@ import com.brickjs.service.impl.MeetServiceImpl;
 import com.brickjs.vo.out.AjaxCommonResponse;
 
 /**
- * @author yuhongliang
+ * @author hongliang.yu
  * 会议控制器
  */
 @RestController
@@ -47,7 +47,6 @@ public class MeetPageController {
 				}
 			});
 		} catch (Exception e) {
-			System.out.println(e);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxCommonResponse;
@@ -69,7 +68,6 @@ public class MeetPageController {
 				}
 			});
 		} catch (Exception e) {
-			System.out.println(e);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxCommonResponse;
@@ -87,7 +85,6 @@ public class MeetPageController {
 			meetingService.save(meet);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK);
 		} catch (Exception e) {
-			System.out.println(e);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxCommonResponse;
@@ -105,7 +102,6 @@ public class MeetPageController {
 			meetingService.update(meet);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK);
 		} catch (Exception e) {
-			System.out.println(e);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxCommonResponse;

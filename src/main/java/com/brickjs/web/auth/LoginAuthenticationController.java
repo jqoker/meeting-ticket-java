@@ -20,7 +20,7 @@ import com.brickjs.utils.JWTTokenUtil;
 import com.brickjs.vo.out.AjaxCommonResponse;
 
 /**
- * @author yuhongliang
+ * @author hongliang.yu
  * 登录控制
  */
 @RestController
@@ -30,7 +30,7 @@ public class LoginAuthenticationController {
 	/**
 	 * 登录
 	 * @param loginUser(登录用户)
-	 * @return
+	 * @return AjaxCommonResponse<Map<String, String>>
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public AjaxCommonResponse<Map<String, String>> login(@RequestBody User loginUser) {
@@ -40,29 +40,27 @@ public class LoginAuthenticationController {
 		
 		/// 执行登录操作
 		try {
-			/// 创建登录token
+			/// 创建登录token并执行登录操作
 			final String token = JWTTokenUtil.sign(loginEmail, loginPassword);
-			JWTAuthenticationToken jwtToken = new JWTAuthenticationToken(token);
+			JWTAuthenticationToken jwtLoginToken = new JWTAuthenticationToken(token);
 			Subject subject = SecurityUtils.getSubject();
-			subject.login(jwtToken);
+			subject.login(jwtLoginToken);
 
-			Map<String, String> map = new HashMap<String, String>(){/**
-				 * 
-				 */
-				private static final long serialVersionUID = -4560909169641165624L;
-			{
-				put("u", loginEmail);
-			}};
+			Map<String, String> map = new HashMap<String, String>() {
+			private static final long serialVersionUID = -4560909169641165624L;
+				{
+					put("u", loginEmail);
+				}
+			};
 			return new AjaxCommonResponse<Map<String, String>>(HttpStatusCode.HTTP_CODE_OK, map); 
 		} catch (Exception e) {
-			System.out.println(e);
 			return new AjaxCommonResponse<Map<String, String>>(HttpStatusCode.HTTP_NO_AUTHENTICATION_CODE);
 		}
 	}
 	
 	/**
 	 * 登出
-	 * @return
+	 * @return AjaxCommonResponse<Map<String, String>>
 	 */
 	@RequestMapping("/logout")
 	public AjaxCommonResponse<Map<String, String>> logout() {
