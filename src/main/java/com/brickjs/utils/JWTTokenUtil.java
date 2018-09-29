@@ -9,6 +9,9 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+/**
+ * @author hongliang.yu
+ */
 public class JWTTokenUtil {
 	
 	// 过期时间
@@ -56,5 +59,4 @@ public class JWTTokenUtil {
 			return null;
 		}
 	}
-
 }

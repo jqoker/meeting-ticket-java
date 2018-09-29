@@ -17,12 +17,12 @@ import com.brickjs.service.UserService;
 import com.brickjs.utils.JWTTokenUtil;
 
 /**
- * @author yuhongliang
+ * @author hongliang.yu
  * 自定义realm
  */
 public class JWTTokenAuthenticationRealm extends AuthorizingRealm {
 	
-	private static final String REALM_NAME = "jwtVerfiyRealm";
+	private static final String REALM_NAME = "jwtLoginVerfiyRealm";
 	
 	@Autowired
 	private UserService loginAccountService;
@@ -55,12 +55,12 @@ public class JWTTokenAuthenticationRealm extends AuthorizingRealm {
 		String account = JWTTokenUtil.getPrincipal(authToken);
 		// 登录用户、需处理异常情况
 		try {
-			User dbUser = loginAccountService.getUserByEmail(account);
+			User sysUserInfo = loginAccountService.getUserByEmail(account);
 			// 密码
-			String dbUserPassword = dbUser.getPassword();
+			String sysUserPasswordInfo = sysUserInfo.getPassword();
 			
 			// 验证不通过
-			if (!JWTTokenUtil.verify(authToken, account, dbUserPassword)) {
+			if (!JWTTokenUtil.verify(authToken, account, sysUserPasswordInfo)) {
 				return null;
 			}
 		} catch(Exception e) {

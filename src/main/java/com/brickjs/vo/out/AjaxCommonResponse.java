@@ -6,7 +6,7 @@ package com.brickjs.vo.out;
 import com.brickjs.constant.HttpStatusCode;
 
 /**
- * @author yuhongliang
+ * @author hongliang.yu
  * ajax响应基类
  */
 public class AjaxCommonResponse<T> {
