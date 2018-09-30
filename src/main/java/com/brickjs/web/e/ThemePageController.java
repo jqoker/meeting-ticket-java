@@ -17,6 +17,8 @@ import com.brickjs.constant.HttpStatusCode;
 import com.brickjs.entity.Theme;
 import com.brickjs.service.impl.ThemeServiceImpl;
 import com.brickjs.vo.out.AjaxCommonResponse;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author hongliang.yu
@@ -24,6 +26,9 @@ import com.brickjs.vo.out.AjaxCommonResponse;
 @RestController
 @RequestMapping("/meeting/e/ajax/")
 public class ThemePageController {
+	
+	// 默认页大小
+	private static final int PAGE_SIZE = 20; 
 	
 	@Autowired
 	private ThemeServiceImpl themeService;
@@ -33,17 +38,22 @@ public class ThemePageController {
 	 * @return
 	 */
 	@RequestMapping("/theme/list")
-	public AjaxCommonResponse<Map<String, Object>> themeList() {
+	public AjaxCommonResponse<Map<String, Object>> themeList(@RequestParam(required = false) Integer page) {
 		AjaxCommonResponse<Map<String, Object>> ajaxJson;
 		try {
+			PageHelper.startPage(page == null ? 0 : page, PAGE_SIZE);
+			final List<Theme> themes = themeService.listAll();
+			final PageInfo<Theme> pageInfo = new PageInfo<Theme>(themes, PAGE_SIZE);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
 				private static final long serialVersionUID = 139523328282057761L;
 				{
-					put("themes", themeService.listAll());
+					put("themes", themes);
+//					put("page", pageInfo.getPageNum());
+//					put("pageSize", pageInfo.getPageSize());
+					put("hasNextPage", pageInfo.isHasNextPage());
 				}
 			});
 		} catch(Exception e) {
-			System.out.println(e);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxJson;
@@ -121,7 +131,6 @@ public class ThemePageController {
 			themeService.update(theme);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK);
 		} catch (Exception e) {
-			System.out.println(e);
 			ajaxJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_ERR);
 		}
 		return ajaxJson;

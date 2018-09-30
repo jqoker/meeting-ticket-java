@@ -30,6 +30,7 @@ public interface CrudDao<T> extends BaseDao {
 	 * @return
 	 */
 	public List<T> findAllList();
+//	public List<T> findAllList(V v);
 	
 	/**
 	 * 指定id下记录集合

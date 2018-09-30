@@ -25,9 +25,9 @@ and open the template in the editor.
 			M.collection,
 			M.sponsor,
 			M.co_sponsor,
-			M.publish,
+			M.publish
 			<!-- M.out_of_date, -->
-			T.id as theme_id,
+<!-- 			T.id as theme_id,
 			T.title as theme_title,
 			T.content as theme_content,
 			T.meet_id as theme_meet_id,
@@ -40,15 +40,15 @@ and open the template in the editor.
 			A.company as author_company,
 			A.blog_site_url as author_blog_site_url,
 			A.github_site_url as author_github_site_url,
-			A.interest as author_interest
+			A.interest as author_interest -->
 		FROM meet M
-			LEFT JOIN theme T ON M.id = T.meet_id
-			LEFT JOIN author A ON T.author_id = A.id
+<!-- 			LEFT JOIN theme T ON M.id = T.meet_id
+			LEFT JOIN author A ON T.author_id = A.id -->
 		WHERE M.del_flag=0
 	</sql>
 	
 	<!-- 嘉宾 -->
-	<resultMap id="authorResultMap" type="Author">
+<!-- 	<resultMap id="authorResultMap" type="Author">
 		<id property="id" column="author_id"/>
 		<result property="name" column="author_name"/>
 		<result property="summary" column="author_summary"/>
@@ -57,12 +57,15 @@ and open the template in the editor.
 		<result property="company" column="author_company"/>
 		<result property="blogSiteUrl" column="author_blog_site_url"/>
 		<result property="githubSiteUrl" column="author_github_site_url"/>
-		<result property="interest" column="author_interest"/>
-	</resultMap>
+		<result property="interest" column="author_intersest"/>
+	</resultMap> -->
 	
 	<!-- 
 		会议结果集
 		一个会议含有多个主题，每个主题对应一个嘉宾
+		* 避开限制
+	 	* https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/Important.md
+	 	* 此处采用遍历取数。而不是联合查询
 	 -->
 	<resultMap id="meetResultMap" type="Meet">
 		<!-- 会议 -->
@@ -81,15 +84,15 @@ and open the template in the editor.
 		<result property="publish" column="publish"/>
 		<result property="outOfDate" column="out_of_date"/>
 		<!-- 主题 -->
-		<collection property="themes" ofType="Theme">
+<!-- 		<collection property="themes" ofType="Theme">
 			<id property="id" column="theme_id"/>
 			<result property="title" column="theme_title"/>
 			<result property="content" column="theme_content"/>
 			<result property="meetId" column="theme_meet_id"/>
 			<result property="authorId" column="theme_author_id"/>
-			<!-- 内嵌嘉宾 -->
+			内嵌嘉宾
 			<association property="author" resultMap="authorResultMap"/>
-		</collection>
+		</collection> -->
 		
 	</resultMap>
 	

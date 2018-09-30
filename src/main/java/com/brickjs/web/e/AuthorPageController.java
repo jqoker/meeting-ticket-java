@@ -17,13 +17,16 @@ import com.brickjs.constant.HttpStatusCode;
 import com.brickjs.entity.Author;
 import com.brickjs.service.impl.AuthorServiceImpl;
 import com.brickjs.vo.out.AjaxCommonResponse;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 /**
  * @author hongliang.yu
  */
 @RestController
 @RequestMapping("/meeting/e/ajax/")
 public class AuthorPageController {
+	// 默认页大小
+	private static final int PAGE_SIZE = 20; 
 	
 	@Autowired
 	private AuthorServiceImpl authorService;
@@ -33,13 +36,17 @@ public class AuthorPageController {
 	 * @return
 	 */
 	@RequestMapping("/author/list")
-	public AjaxCommonResponse<Map<String, Object>> getAuthorList() {
+	public AjaxCommonResponse<Map<String, Object>> getAuthorList(@RequestParam(required = false) Integer page) {
 		AjaxCommonResponse<Map<String, Object>> ajaxAuthorJson;
 		try {
+			PageHelper.startPage(page == null ? 0 : page, PAGE_SIZE);
+			final List<Author> authors = authorService.listAll();
+			final PageInfo<Author> pageInfo = new PageInfo<Author>(authors, PAGE_SIZE);
 			ajaxAuthorJson = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>(){
 				private static final long serialVersionUID = 9063660679922745268L;
 				{
-					put("authors", authorService.listAll());
+					put("authors", authors);
+					put("hasNextPage", pageInfo.isHasNextPage());
 				}
 			});
 		} catch (Exception e) {

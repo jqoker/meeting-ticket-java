@@ -4,15 +4,27 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+	<!-- 基本设置 -->
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
 
+	<!-- 别名 -->
 	<typeAliases>
 	  <typeAlias alias="Author" type="com.brickjs.entity.Author"/>
 	  <typeAlias alias="Meet" type="com.brickjs.entity.Meet"/>
 	  <typeAlias alias="Theme" type="com.brickjs.entity.Theme"/>
 	  <typeAlias alias="User" type="com.brickjs.entity.User"/>
 	</typeAliases>
+	
+	<!-- 插件配置 -->
+	<plugins>
+	    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+	    	<property name="reasonable" value="true"/>
+		    <property name="supportMethodsArguments" value="true"/>
+	        <property name="params" value="pageNum=page;pageSize=pageSize;"/>
+	        <property name="pageSizeZero" value="true"/>
+		</plugin>
+	</plugins>
 	
 </configuration>

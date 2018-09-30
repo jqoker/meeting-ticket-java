@@ -6,6 +6,7 @@ package com.brickjs.service.impl;
 import java.util.List;
 
 import com.brickjs.service.BaseService;
+import com.brickjs.vo.in.QueryMeetReqParam;
 
 /**
  * @author yuhongliang
@@ -40,12 +41,16 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 	}
 
 	// 查询所有
-	public List<T> listAll() {
+	public List<T> listAll(QueryMeetReqParam param) {
 		return null;
 	}
 
 	// 指定id下的全部
 	public List<T> listAll(int id) {
+		return null;
+	}
+
+	public List<T> listAll() {
 		return null;
 	}
 }

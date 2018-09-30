@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.brickjs.dao.MeetDao;
 import com.brickjs.dao.ThemeDao;
 import com.brickjs.entity.Meet;
+import com.brickjs.entity.Theme;
 import com.brickjs.service.MeetService;
 
 /**
@@ -22,7 +23,6 @@ import com.brickjs.service.MeetService;
  */
 @Service
 public class MeetServiceImpl extends BaseServiceImpl<Meet> implements MeetService {
-	
 	@Autowired
 	private MeetDao meetingDaoService;
 	@Autowired
@@ -37,10 +37,20 @@ public class MeetServiceImpl extends BaseServiceImpl<Meet> implements MeetServic
 	
 	/**
 	 * 获取会议列表
+	 * 避开限制
+	 * https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/Important.md
+	 * 此处采用遍历取数。而不是联合查询
 	 */
 	@Override
 	public List<Meet> listAll() {
-		return meetingDaoService.findAllList();
+		List<Meet> queryAllMeets = meetingDaoService.findAllList();
+		// TODO 此处遍历性能问题优化
+		// 比如接入redis服务
+		for (Meet currentMeet : queryAllMeets) {
+			List<Theme> accordingThemes = themeDaoService.findThemeByMeetId(currentMeet.getId());
+			currentMeet.setThemes(accordingThemes);
+		}
+		return queryAllMeets;
 	}
 
 	/**

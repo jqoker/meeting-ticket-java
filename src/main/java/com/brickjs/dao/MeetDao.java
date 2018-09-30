@@ -11,8 +11,7 @@ import com.brickjs.dao.common.CrudDao;
 import com.brickjs.entity.Meet;
 
 /**
- * @author yuhongliang
- *
+ * @author hongliang.yu
  */
 @Repository
 public interface MeetDao extends CrudDao<Meet> {

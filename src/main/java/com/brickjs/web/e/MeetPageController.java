@@ -4,10 +4,8 @@
 package com.brickjs.web.e;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +17,8 @@ import com.brickjs.constant.HttpStatusCode;
 import com.brickjs.entity.Meet;
 import com.brickjs.service.impl.MeetServiceImpl;
 import com.brickjs.vo.out.AjaxCommonResponse;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author hongliang.yu
@@ -27,23 +27,29 @@ import com.brickjs.vo.out.AjaxCommonResponse;
 @RestController
 @RequestMapping("/meeting/e/ajax/")
 public class MeetPageController {
+	// 每一页大小
+	private static final int PAGE_SIZE = 20;
 	
 	@Autowired
 	private MeetServiceImpl meetingService;
 	
 	/**
 	 * 所有会议
+	 * 支持分页
 	 * @return
 	 */
 	@RequestMapping("/meet/list")
-	public AjaxCommonResponse<Map<String, Object>> meets(ServletRequest request, ServletResponse response) {
+	public AjaxCommonResponse<Map<String, Object>> listAllMeet(@RequestParam(required = false) Integer page) {
 		AjaxCommonResponse<Map<String, Object>> ajaxCommonResponse;
 		try {
-			// map
+			PageHelper.startPage(page == null ? 0 : page, PAGE_SIZE);
+			final List<Meet> meets = meetingService.listAll();
+			final PageInfo<Meet> pageInfo = new PageInfo<Meet>(meets, PAGE_SIZE);
 			ajaxCommonResponse = new AjaxCommonResponse<Map<String,Object>>(HttpStatusCode.HTTP_CODE_OK, new HashMap<String, Object>() {
 				private static final long serialVersionUID = 284168023697104717L;
 				{
-					put("meets", meetingService.listAll());
+					put("meets", meets);
+					put("hasNextPage", pageInfo.isHasNextPage());
 				}
 			});
 		} catch (Exception e) {
