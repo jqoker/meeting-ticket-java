@@ -8,8 +8,7 @@ package com.brickjs.entity;
  * @author yuhongliang
  *
  */
-public class Theme {
-	private int id;
+public class Theme extends BaseEntity {
 	private String title;
 	private String content;
 	private int meetId;
@@ -20,13 +19,6 @@ public class Theme {
 		
 	}
 	public Theme(int id) {
-		this.id = id;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
 		this.id = id;
 	}
 	public int getMeetId() {

@@ -10,10 +10,9 @@ import java.util.Map;
  * @author yuhongliang
  * 会议实体
  */
-public class Meet {
+public class Meet  extends BaseEntity{
 	
 	// 基本属性
-	private int id;
 	private String title;
 	private String imgUrl;
 	private String publisher;
@@ -34,12 +33,6 @@ public class Meet {
 		
 	}
 	public Meet(int id) {
-		this.id = id;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
 		this.id = id;
 	}
 	public String getTitle() {

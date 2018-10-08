@@ -11,9 +11,7 @@ import java.sql.Date;
  * @author yuhongliang
  * 系统用户
  */
-public class User {
-    
-    private int id;
+public class User extends BaseEntity {
     private String email;
     private String nickName;
     private String telephone;
@@ -28,14 +26,11 @@ public class User {
     public User() {
     	
     }
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+    
+    public User(String nickName, String telephone) {
+    	this.nickName = nickName;
+    	this.telephone = telephone;
+    }
 
 	public String getEmail() {
 		return email;

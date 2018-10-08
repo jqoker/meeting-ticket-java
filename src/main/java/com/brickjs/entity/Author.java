@@ -7,9 +7,8 @@ package com.brickjs.entity;
  * @author yuhongliang
  * 嘉宾实体
  */
-public class Author {
+public class Author extends BaseEntity {
 	
-	private int id;
 	private String name;
 	private String summary;
 	private String avatarImgUrl;
@@ -38,12 +37,6 @@ public class Author {
 		this.summary = summary;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}
