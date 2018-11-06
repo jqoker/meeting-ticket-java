@@ -11,13 +11,15 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
-	<!-- 扫描包 -->
-    <context:component-scan base-package="com.brickjs.web"></context:component-scan>
+	<!-- 扫描controller相关包。spring-web中只操作web相关配置 -->
+    <context:component-scan base-package="com.hailooo.web"></context:component-scan>
     
-    <!-- http message 配置 -->
+    <!-- http message 配置，用于请求响应数据和类间的转换-->
     <mvc:annotation-driven>
         <mvc:message-converters>
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter"></bean>   
+        	<!-- string -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter"></bean>
+            <!-- json -->
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="supportedMediaTypes">  
 			        <list>
@@ -34,7 +36,6 @@
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    
     <mvc:view-controller path="/" view-name="index"/>
     
     <!-- 跨域配置 -->

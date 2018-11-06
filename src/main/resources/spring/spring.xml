@@ -24,8 +24,8 @@
     <tx:annotation-driven />
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     
-    <!-- spring扫描除controller外的类 -->
-    <context:component-scan base-package="com.brickjs">
+    <!-- spring扫描除controller外的包 -->
+    <context:component-scan base-package="com.hailooo">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     
@@ -63,7 +63,7 @@
 		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.brickjs.dao" />
+        <property name="basePackage" value="com.hailooo.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
     
@@ -87,7 +87,7 @@
 	    <property name="realm" ref="jwtTokenAuthenticationRealm"/>
 	</bean>
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-    <bean id="jwtTokenAuthenticationRealm" class="com.brickjs.shiro.JWTTokenAuthenticationRealm"></bean>
-    <bean id="jwtTokenAuthenticationFilter" class="com.brickjs.shiro.JWTTokenAuthenticationFilter"></bean>
+    <bean id="jwtTokenAuthenticationRealm" class="com.hailooo.shiro.JWTTokenAuthenticationRealm"></bean>
+    <bean id="jwtTokenAuthenticationFilter" class="com.hailooo.shiro.JWTTokenAuthenticationFilter"></bean>
     
 </beans>

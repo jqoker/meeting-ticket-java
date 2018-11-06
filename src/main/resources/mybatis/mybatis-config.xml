@@ -11,10 +11,10 @@
 
 	<!-- 别名 -->
 	<typeAliases>
-	  <typeAlias alias="Author" type="com.brickjs.entity.Author"/>
-	  <typeAlias alias="Meet" type="com.brickjs.entity.Meet"/>
-	  <typeAlias alias="Theme" type="com.brickjs.entity.Theme"/>
-	  <typeAlias alias="User" type="com.brickjs.entity.User"/>
+	  <typeAlias alias="Author" type="com.hailooo.entity.Author"/>
+	  <typeAlias alias="Meet" type="com.hailooo.entity.Meet"/>
+	  <typeAlias alias="Theme" type="com.hailooo.entity.Theme"/>
+	  <typeAlias alias="User" type="com.hailooo.entity.User"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->

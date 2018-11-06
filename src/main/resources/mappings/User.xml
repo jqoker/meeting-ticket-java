@@ -8,7 +8,7 @@ and open the template in the editor.
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.brickjs.dao.UserDao">
+<mapper namespace="com.hailooo.dao.UserDao">
 
 	<!-- 邮箱查询用户 -->
 	<select
