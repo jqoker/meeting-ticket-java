@@ -7,7 +7,7 @@ package com.hailooo.entity;
  * @author yuhongliang
  * 嘉宾实体
  */
-public class Author extends BaseEntity {
+public class Speaker extends BaseEntity {
 	
 	private String name;
 	private String summary;
@@ -23,15 +23,15 @@ public class Author extends BaseEntity {
 	private int praise;	// 点赞数
 	private int collection;	// 关注数
 	
-	public Author() {
+	public Speaker() {
 		
 	}
 	
-	public Author(int id) {
+	public Speaker(int id) {
 		this.id = id;
 	}
 	
-	public Author(int id, String name, String summary) {
+	public Speaker(int id, String name, String summary) {
 		this.id = id;
 		this.name = name;
 		this.summary = summary;

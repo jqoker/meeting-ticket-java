@@ -32,7 +32,7 @@ and open the template in the editor.
 	</sql>
 	
 	<!-- 嘉宾 -->
-	<resultMap id="authorResultMap" type="Author">
+	<resultMap id="speakerResultMap" type="Speaker">
 		<id property="id" column="author_id"/>
 		<result property="name" column="author_name"/>
 		<result property="summary" column="author_summary"/>
@@ -51,9 +51,9 @@ and open the template in the editor.
 		<result property="title" column="theme_title"/>
 		<result property="content" column="theme_content"/>
 		<result property="meetId" column="theme_meet_id"/>
-<!-- 		<result property="authorId" column="theme_author_id"/> -->
+		<result property="speakerId" column="theme_author_id"/>
 		<!-- 内嵌嘉宾 -->
-		<association property="author" resultMap="authorResultMap"/>
+		<association property="speaker" resultMap="speakerResultMap"/>
 	</resultMap>
 	
 	<!--

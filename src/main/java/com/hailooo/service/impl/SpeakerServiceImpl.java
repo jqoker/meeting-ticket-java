@@ -8,22 +8,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hailooo.dao.AuthorDao;
-import com.hailooo.entity.Author;
-import com.hailooo.service.AuthorService;
+import com.hailooo.dao.SpeakerDao;
+import com.hailooo.entity.Speaker;
+import com.hailooo.service.SpeakerService;
 
 /**
  * @author yuhongliang
  *
  */
 @Service
-public class AuthorServiceImpl extends BaseServiceImpl<Author> implements AuthorService {
+public class SpeakerServiceImpl extends BaseServiceImpl<Speaker> implements SpeakerService {
 	
 	@Autowired
-	private AuthorDao authorDaoService;
+	private SpeakerDao authorDaoService;
 	
 	/// 更加用户名查询
-	public List<Author> getAuthorByName(String name) {
+	public List<Speaker> getAuthorByName(String name) {
 		return authorDaoService.get(name);
 	}
 	
@@ -33,25 +33,25 @@ public class AuthorServiceImpl extends BaseServiceImpl<Author> implements Author
 	 * @return
 	 */
 	@Override
-	public int save(List<Author> authors) {
+	public int save(List<Speaker> authors) {
 		return authorDaoService.insert(authors);
 	}
 
 	// 查询全部
 	@Override
-	public List<Author> listAll() {
+	public List<Speaker> listAll() {
 		return authorDaoService.findAllList();
 	}
 
 	// 删除
 	@Override
 	public int remove(int id) {
-		return authorDaoService.delete(new Author(id));
+		return authorDaoService.delete(new Speaker(id));
 	}
 	
 	// 更新
 	@Override
-	public int update(Author author) {
+	public int update(Speaker author) {
 		return authorDaoService.update(author);
 	}
 

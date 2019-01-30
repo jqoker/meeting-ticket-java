@@ -12,8 +12,8 @@ public class Theme extends BaseEntity {
 	private String title;
 	private String content;
 	private int meetId;
-	private int authorId;
-	private Author author;
+	private int speakerId;
+	private Speaker speaker;
 	
 	public Theme() {
 		
@@ -39,16 +39,16 @@ public class Theme extends BaseEntity {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getAuthorId() {
-		return authorId;
+	public int getSpeakerId() {
+		return speakerId;
 	}
-	public void setAuthorId(int authorId) {
-		this.authorId = authorId;
+	public void setSpeakerId(int speakerId) {
+		this.speakerId = speakerId;
 	}
-	public Author getAuthor() {
-		return author;
+	public Speaker getSpeaker() {
+		return speaker;
 	}
-	public void setAuthor(Author author) {
-		this.author = author;
+	public void setSpeaker(Speaker speaker) {
+		this.speaker = speaker;
 	}
 }

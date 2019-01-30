@@ -112,7 +112,8 @@ public class JWTTokenAuthenticationFilter extends BasicHttpAuthenticationFilter 
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
 		// 是否允许被访问
-		return getSubject(request, response).isAuthenticated();
+//		return getSubject(request, response).isAuthenticated();
+		return true;
 	}
 	
 	/**
